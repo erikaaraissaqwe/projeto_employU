@@ -5,7 +5,7 @@ router.get("/", (req, res)=>{
 });
 
 //candidato
-router.get("/:empresa/:vagaId", (req, res)=>{
+router.get("/:empresa/:vagaId",Auth.private, (req, res)=>{
     res.send("visualiza vaga");
 });
 

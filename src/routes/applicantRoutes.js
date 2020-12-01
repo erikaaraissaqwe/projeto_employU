@@ -8,7 +8,7 @@ router.post("/login", (req, res)=>{
     //todo: login verificacao
 });
 
-router.get("/signup", (req, res)=>{
+router.get("/signup",  (req, res)=>{
     res.send("cadastro formulario")
 });
 

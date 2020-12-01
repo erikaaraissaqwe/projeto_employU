@@ -30,8 +30,8 @@ server.get("/", (req, res)=>{
 server.get("/inicio", (req, res)=>{
     res.send("Home com login/cadastro")
 });
-server.use("/candidato", require("./routes/applicantRoutes.js"));
-server.use("/empresa", require("./routes/companyRoutes.js"));
+server.use("/candidato", require("./src/routes/applicantRoutes.js"));
+server.use("/empresa", require("../routes/companyRoutes.js"));
 
 server.get('/ping', (req, res)=>{
     res.json({pong:true});
