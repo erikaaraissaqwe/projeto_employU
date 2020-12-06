@@ -3,6 +3,11 @@ const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 const fileupload =require('express-fileupload');
+const server = express();
+server.use(cors());
+server.use(express.json());
+server.use(express.urlencoded({extended: true}));
+server.use(fileupload());
 
 mongoose.connect(process.env.DATABASE, {
     userNewUrlParser: true,
@@ -15,12 +20,6 @@ mongoose.connection.on('error', (error) =>{
     console.log("ERRO:   ", error.message);
 });
 
-const server = express();
-
-server.use(cors());
-server.use(express.json());
-server.use(express.urlencoded({extended: true}));
-server.use(fileupload());
 
 server.use(express.static(__dirname+'/public'));
 
@@ -30,8 +29,12 @@ server.get("/", (req, res)=>{
 server.get("/inicio", (req, res)=>{
     res.send("Home com login/cadastro")
 });
+
+//routes to applicantRoutes
 server.use("/candidato", require("./src/routes/applicantRoutes.js"));
-server.use("/empresa", require("../routes/companyRoutes.js"));
+
+//routes to companyRoutes
+server.use("/empresa", require("./src/routes/companyRoutes.js"));
 
 server.get('/ping', (req, res)=>{
     res.json({pong:true});

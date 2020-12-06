@@ -1,16 +1,11 @@
 const mongoose = require('mongoose');
-const jobOpportunity = require('./jobOpportunity');
 mongoose.Promise = global.Promise;
 
 const modelSchema = new mongoose.Schema({
-    id: String,
     name:String,
     email: String,
     password:String,
-    cpf: String,
-    curriculum: Curriculum,
-    jobOpportunities = [jobOpportunity]
-    
+    cpf: String
 });
 
 const modelName = 'Candidate';

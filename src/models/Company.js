@@ -7,8 +7,7 @@ const modelSchema = new mongoose.Schema({
     name:String,
     email: String,
     password:String,
-    cnpj: String,
-    business: Business
+    cnpj: String
 });
 
 const modelName = 'Company';

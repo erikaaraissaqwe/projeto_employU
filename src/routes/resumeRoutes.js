@@ -8,7 +8,7 @@ router.get("/novo", (req, res)=>{
     res.send("curriculo formulario")
 });
 
-router.post("/novo", (req, res)=>{
+router.post("/send", (req, res)=>{
     //todo: curriculo verificacao
 });
 

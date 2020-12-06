@@ -1,6 +1,8 @@
 const { validationResult, matchedData} = require('express-validator');
 const Company = require("../models/Company");
 const Candidate = require("../models/Candidate");
+
+
 module.exports = {
     signin: async (req, res) => {
 

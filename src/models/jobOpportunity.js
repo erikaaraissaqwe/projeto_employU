@@ -4,12 +4,11 @@ mongoose.Promise = global.Promise;
 
 const modelSchema = new mongoose.Schema({
     id: String,
-    company = Company,
     descrption: String,
     requirements: [String],
     adress: {
         street: String,
-        number: Int,
+        number: int,
         city: String,
         state: String
     },
