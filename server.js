@@ -9,16 +9,15 @@ server.use(express.json());
 server.use(express.urlencoded({extended: true}));
 server.use(fileupload());
 
-mongoose.connect(process.env.DATABASE, {
+
+mongoose.connect('mongodb+srv://employU:employU@employu.p4q3n.mongodb.net/<employU>?retryWrites=true&w=majority',
+{
     userNewUrlParser: true,
     useFindAndModify: false,
     useUnifiedTopology: true
-});
+}
+);
 
-mongoose.Promise = global.Promise;
-mongoose.connection.on('error', (error) =>{
-    console.log("ERRO:   ", error.message);
-});
 
 
 server.use(express.static(__dirname+'/public'));
@@ -26,6 +25,7 @@ server.use(express.static(__dirname+'/public'));
 server.get("/", (req, res)=>{
     res.redirect("/inicio")
 });
+
 server.get("/inicio", (req, res)=>{
     res.send("Home com login/cadastro")
 });
