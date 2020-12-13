@@ -2,12 +2,11 @@ require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
-const fileupload =require('express-fileupload');
 const server = express();
 server.use(cors());
 server.use(express.json());
 server.use(express.urlencoded({extended: true}));
-server.use(fileupload());
+
 
 
 mongoose.connect('mongodb+srv://employU:employU@employu.p4q3n.mongodb.net/<employU>?retryWrites=true&w=majority',
