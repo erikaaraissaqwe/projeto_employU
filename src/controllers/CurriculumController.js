@@ -5,8 +5,8 @@ module.exports = {
 
     async store(req, res){
         
-        const {fileProfile} = req.files;
-        const address = req.body.address;
+        const {filesCandidate} = req.files;
+        const address = req.files.address;
         const {professionalExperiences} = req.body;
         const {academicFormations} = req.body;
         const {user_id} = req.headers;
@@ -16,7 +16,11 @@ module.exports = {
         if(!candidate){
             return res.status(400).json({errorMessage : 'não existe esse usuário'});
         }
-        console.log(fileProfile);
+        if(!filesCandidate){
+            fileCandidate = null;
+        }
+
+        console.log(filesCandidate);
         console.log(address);
         console.log(user_id);
         console.log(professionalExperiences);
@@ -24,7 +28,7 @@ module.exports = {
 
         const curriculum = await Curriculum.create({
             user : user_id,
-            fileProfile,
+            filesCandidate,
             address,
             professionalExperience : professionalExperiences.split(',').map(tech => tech.trim()),
             academicFormation : academicFormations.split(',').map(formation => formation.trim())

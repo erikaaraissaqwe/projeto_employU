@@ -13,7 +13,7 @@ router.get("/signup",  (req, res)=>{
     res.send("cadastro formulario")
 });
 
-router.post("/register", candidateController.register)
+router.post("/register", candidateController.register);
 
 router.post("/logout", (req, res)=>{
     //todo: logout verificacao

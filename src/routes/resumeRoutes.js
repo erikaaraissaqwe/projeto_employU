@@ -12,6 +12,7 @@ router.get("/novo", (req, res)=>{
     res.send("curriculo formulario")
 });
 
-router.post("/send", upload.single('fileProfile'), curriculumController.store);
+//salva dados do curriculo
+router.post("/send", upload.array('filesCandidate'), curriculumController.store);
 
 module.exports = router;
