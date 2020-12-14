@@ -8,7 +8,7 @@ module.exports = {
 
     },
 
-    signup: async (req, res) => {
+    register: async (req, res) => {
         const errors = validationResult(req);
         if(!errors.isEmpty()){
             res.json({error: errors.mapped()});

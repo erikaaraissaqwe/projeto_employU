@@ -1,18 +1,27 @@
 const mongoose = require('mongoose');
-const Business = require('./Business');
+const bcrypt = require('bcrypt');
 mongoose.Promise = global.Promise;
 
 const CompanySchema = new mongoose.Schema({
-    name:String,
-    email: String,
-    password:String,
-    cnpj: String
+    name : String,
+    email: {
+        type : String,
+        unique : true,
+        lowercase : true,
+        require : true,
+    },
+    password : {
+        type: String,
+        select: false,
+    },
+    cnpj : String
 });
 
 const modelName = 'Company';
 
-if(mongoose.connection && mongoose.connection.models[modelName]){
-    module.exports = mongoose.connection.models[modelName];
-}else{
-    module.exports = mongoose.model(modelName, CompanySchema);
-}
+CompanySchema.pre('save', async function(next){
+    const hash = await bcrypt.hash(this.password, 10);
+    this.password = hash;
+});
+
+module.exports = mongoose.model(modelName, CompanySchema);

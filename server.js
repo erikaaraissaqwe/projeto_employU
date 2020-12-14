@@ -2,21 +2,18 @@ require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
+const bodyParser = require('body-parser');
 const server = express();
 server.use(cors());
-server.use(express.json());
-server.use(express.urlencoded({extended: true}));
+server.use(bodyParser.json());
+server.use(bodyParser.urlencoded({extended: false}));
 
 
-
-mongoose.connect('mongodb+srv://employU:employU@employu.p4q3n.mongodb.net/<employU>?retryWrites=true&w=majority',
-{
-    userNewUrlParser: true,
-    useFindAndModify: false,
-    useUnifiedTopology: true
-}
-);
-
+mongoose.connect('mongodb+srv://employU:employU@employu.p4q3n.mongodb.net/<employU>?retryWrites=true&w=majority',{
+    useUnifiedTopology : true,
+    userNewUrlParser : true,
+    useCreateIndex : true
+});
 
 
 server.use(express.static(__dirname+'/public'));
