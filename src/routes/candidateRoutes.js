@@ -21,6 +21,6 @@ router.post("/logout", (req, res)=>{
 
 router.use("/curriculo", require("./resumeRoutes"));
 
-router.use("/vagas", require("./jobRoutes"));
+router.use("/vagas", require("./candidateJobRoutes"));
 
 module.exports = router;

@@ -18,6 +18,6 @@ router.post("/logout", (req, res)=>{
     //todo: logout verification
 });
 
-router.use("/vagas", require("./jobRoutes"));
+router.use("/vagas", require("./companyJobRoutes"));
 
 module.exports = router;
