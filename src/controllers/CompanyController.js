@@ -1,4 +1,4 @@
-const candidate = require("../models/Candidate");
+const Company = require("../models/Company");
 
 module.exports = {
 
@@ -6,18 +6,16 @@ module.exports = {
         const name = req.body.name;
         const email = req.body.email;
         const password = req.body.password;
-        const cpf = req.body.cpf;
+        const cnpj = req.body.cnpj;
 
-        let user = await candidate.findOne({email});
+        let user = await Company.findOne({email});
         if (!user){
-            user = await candidate.create({name, email, password, cpf});
+            user = await Company.create({name, email, password, cnpj});
             return res.json({user});
         }
 
-        return res.json({errorMessage:'usuário já cadastrado'});
+        return res.json({errorMessage:'Empresa já cadastrado'});
         
-
-       
     },
 
     async login(req, res){
@@ -27,4 +25,3 @@ module.exports = {
         return res.json({user});
     }
 }
-

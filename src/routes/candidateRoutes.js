@@ -13,7 +13,7 @@ router.get("/signup",  (req, res)=>{
     res.send("cadastro formulario")
 });
 
-router.post("/register", candidateController.register)
+router.post("/register", candidateController.register);
 
 router.post("/logout", (req, res)=>{
     //todo: logout verificacao
@@ -21,6 +21,6 @@ router.post("/logout", (req, res)=>{
 
 router.use("/curriculo", require("./resumeRoutes"));
 
-router.use("/vagas", require("./jobRoutes"));
+router.use("/vagas", require("./candidateJobRoutes"));
 
 module.exports = router;
