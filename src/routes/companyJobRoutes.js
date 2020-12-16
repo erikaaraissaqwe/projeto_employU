@@ -6,9 +6,7 @@ router.post("/add", jobController.validateNewJob, jobController.add);
 
 router.get("/:vagaid", jobController.listOne);
 
-router.put("/:vagaid", (req, res)=>{
-    //todo: fechar vaga + feedback pra todos
-});
+router.put("/:vagaid", jobController.closeJob );//falta feedback
 
 router.get("/:vagaId/candidato/:candidatoNome", (req, res)=>{
     res.send("perfil e curriculo do candidato concorrente a vaga");

@@ -47,6 +47,24 @@ module.exports = {
             }
             return res.json({job});
         });
-    }
+    },
+
+    async closeJob(req, res){
+        const vagaId = {"_id": req.params.vagaid};
+        const isOpen = {"isOpen": false};
+        await jobOpportunity.findOneAndUpdate(vagaId, isOpen, (err) =>{
+            if (err){
+                return res.json({errorMessage:err});
+            }
+        });
+        await jobOpportunity.findOne(vagaId, (err,job) =>{
+            if (err){
+                return res.json({errorMessage:err})
+            }
+            return res.json({job})
+        });
+    },
+
+    
 }
 
