@@ -1,23 +1,17 @@
 const router = require("express").Router();
 const companyController = require("../controllers/CompanyController");
-router.get("/login", (req, res)=>{
-    res.send("login formulario")
-});
+const authMiddleware = require('../middlewares/Auth')
 
-router.post("/login", (req, res)=>{
-    //todo: login verification
-});
-
-router.get("/signup", (req, res)=>{
-    res.send("cadastro formulario")
-});
+router.post("/loginCheck", companyController.login);
 
 router.post("/register", companyController.register);
+
+//router.use(authMiddleware);
 
 router.post("/logout", (req, res)=>{
     //todo: logout verification
 });
 
-router.use("/vagas", require("./companyJobRoutes"));
+router.use("/vagas", authMiddleware.private, require("./companyJobRoutes"));
 
 module.exports = router;

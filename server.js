@@ -2,12 +2,11 @@ require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
-const fileupload =require('express-fileupload');
+const bodyParser = require('body-parser');
 const server = express();
 server.use(cors());
-server.use(express.json());
-server.use(express.urlencoded({extended: true}));
-server.use(fileupload());
+server.use(bodyParser.json());
+server.use(bodyParser.urlencoded({extended: false}));
 
 
 mongoose.connect('mongodb://localhost:27017/test')

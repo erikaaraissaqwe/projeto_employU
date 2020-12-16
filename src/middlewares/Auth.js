@@ -1,43 +1,34 @@
 const Company = require("../models/Company");
 const Candidate = require("../models/Candidate");
+const jwt = require('jsonwebtoken');
+const authConfig = require('../config/auth.json');
 
 module.exports = {
-    private: async (req, res, next) =>{
-        if(!req.query.token && !req.body.token){
-            res.json({notallowed: true});
-            return;
+
+    private : async (req, res, next) => {
+        const authHeader = req.headers.authorization;
+        if(!authHeader){
+            return res.status(401).send({errorMessage:'No token provided'});
         }
 
-        let token = '';
+        const parts = authHeader.split(' ');
 
-        if(req.query.token){
-            token = req.query.token;
+        if(!parts.length === 2){
+            return res.status(401).send({errorMessage:'Token error'});
         }
 
-        if(req.body.token){
-            token = req.body.token;
-        }
-        if(token === ''){
-            res.json({notallowed: true});
-            return;
+        const [scheme, token] = parts;
+        if(!/^Bearer$/i.test(scheme)){
+            return res.status(401).send({errorMessage:'Token malformatted'});
         }
 
-        let user;
-        switch(type){
-            case 'company':
-            user = await Company.findOne({token});
-            break;
-
-            case 'candidate':
-                user = await Candidate.findOne({token});
-                break;
-        }
-
-        if(!user){
-            res.json({notallowed: true});
-            return;
-        }
-
-        next();
-    }
-} 
+        jwt.verify(token, authConfig.secret, (err, decoded) => {
+            if (err){
+                return res.status(401).send({errorMessage:'Token invalid'});
+            }
+            req.userId = decoded.params.id;
+            return next();
+        });
+        
+    } 
+}

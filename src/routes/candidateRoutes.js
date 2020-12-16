@@ -1,26 +1,15 @@
 const router = require("express").Router();
 const candidateController = require("../controllers/CandidateController");
+const authMiddleware = require('../middlewares/Auth')
 
-router.get("/login", (req, res)=>{
-    res.send("login formulario")
-});
 
-router.post("/loginCheck", (req, res)=>{
-    //todo: login verificacao
-});
-
-router.get("/signup",  (req, res)=>{
-    res.send("cadastro formulario")
-});
+router.post("/loginCheck", candidateController.login);
 
 router.post("/register", candidateController.register);
 
-router.post("/logout", (req, res)=>{
-    //todo: logout verificacao
-});
 
-router.use("/curriculo", require("./resumeRoutes"));
+router.use("/curriculo", authMiddleware.private, require("./resumeRoutes"));
 
-router.use("/vagas", require("./candidateJobRoutes"));
+router.use("/vagas", authMiddleware.private, require("./candidateJobRoutes"));
 
 module.exports = router;

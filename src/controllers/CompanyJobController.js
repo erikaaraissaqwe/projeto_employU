@@ -1,19 +1,17 @@
 const jobOpportunity = require("../models/jobOpportunity.js");
 const { body, validationResult } = require('express-validator');
 
-
 module.exports = {
 
     validateNewJob: [
-        body('description', "Descricao não pode estar vazia").trim().notEmpty(),
-        body('companyId', "Necessita associar o id da empresa").trim().notEmpty()
+        body('description', "Descricao não pode estar vazia").trim().notEmpty()
     ],
 
     async add(req, res){
         const errors = validationResult(req);
 
         if (!errors.isEmpty()) {
-            res.send(errors.array());
+            return res.send(errors.array());
         }
         const newJob = {
             description: req.body.description,
@@ -27,7 +25,7 @@ module.exports = {
             qualifications: req.body.qualifications,
             additionalInformation: req.body.additionalInformation,
             isOpen: true,
-            companyId: req.body.companyId
+            companyId: req.userId
         }
 
         await jobOpportunity.create(newJob, (err, job) => {

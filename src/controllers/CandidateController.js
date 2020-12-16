@@ -1,30 +1,66 @@
-const candidate = require("../models/Candidate");
+const Candidate = require("../models/Candidate");
+const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
+const authConfig = require('../config/auth');
 
 module.exports = {
 
     async register(req, res){
-        const name = req.body.name;
-        const email = req.body.email;
-        const password = req.body.password;
-        const cpf = req.body.cpf;
+        try{
+            const {name} = req.body;
+            const {email} = req.body;
+            const {password} = req.body;
+            const {cpf} = req.body;
+    
+            let user = await Candidate.findOne({email});
 
-        let user = await candidate.findOne({email});
-        if (!user){
-            user = await candidate.create({name, email, password, cpf});
-            return res.json({user});
+            if (!user){
+
+                user = await Candidate.create({
+                    name,
+                    email,
+                    password,
+                    cpf
+                });
+
+                user.password = undefined;
+                return res.send({user, token: generateToken({id: user.id})});
+            }
+    
+            return res.status(400).json({errorMessage:'User already exists'});
         }
-
-        return res.json({errorMessage:'usuário já cadastrado'});
+        catch(err){
         
-
-       
+            return res.status(400).json({errorMessage:'Registration failed'});
+        }
     },
 
     async login(req, res){
-        const { email } = req.body;
-        const { password } = req.body;
-        const user = await user.findOne({email});
-        return res.json({user});
+        const {email} = req.body;
+        const {password} = req.body;
+
+        const user = await Candidate.findOne({email}).select('+password');
+
+        if (!user){
+            return res.status(400).json({errorMessage:'User not found'});
+        }
+
+        if(!await bcrypt.compare(password, user.password)){
+            return res.status(400).json({errorMessage:'Invalid password'});
+        }
+
+        user.password = undefined;
+
+    
+        return res.json({user, 
+            token : generateToken({id : user.id}),
+        });
     }
+}
+
+function generateToken(params = {}){
+    return jwt.sign({params}, authConfig.secret,{
+        expiresIn : 10286,
+    });
 }
 
