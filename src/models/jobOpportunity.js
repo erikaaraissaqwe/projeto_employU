@@ -1,20 +1,26 @@
 const mongoose = require('mongoose');
-const Company = require('./Company');
 mongoose.Promise = global.Promise;
 
 const modelSchema = new mongoose.Schema({
-    id: String,
-    descrption: String,
+    description: String,
     requirements: [String],
-    adress: {
+    address: {
         street: String,
-        number: int,
+        number: Number,
         city: String,
         state: String
     },
     qualifications: [String],
-    additionalInformation: String
-    
+    additionalInformation: String,
+    isOpen: Boolean,
+    candidatesId: [{
+        type:mongoose.Schema.Types.ObjectId,
+        ref: "Candidate"
+    }],
+    companyId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Company"
+    }
 });
 
 const modelName = 'JobOpportunity';

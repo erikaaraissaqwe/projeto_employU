@@ -8,13 +8,11 @@ server.use(cors());
 server.use(bodyParser.json());
 server.use(bodyParser.urlencoded({extended: false}));
 
-
 mongoose.connect('mongodb+srv://employU:employU@employu.p4q3n.mongodb.net/<employU>?retryWrites=true&w=majority',{
     useUnifiedTopology : true,
     userNewUrlParser : true,
     useCreateIndex : true
 });
-
 
 server.use(express.static(__dirname+'/public'));
 
@@ -26,8 +24,8 @@ server.get("/inicio", (req, res)=>{
     res.send("Home com login/cadastro")
 });
 
-//routes to applicantRoutes
-server.use("/candidato", require("./src/routes/applicantRoutes.js"));
+//routes to candidateRoutes
+server.use("/candidato", require("./src/routes/candidateRoutes.js"));
 
 //routes to companyRoutes
 server.use("/empresa", require("./src/routes/companyRoutes.js"));

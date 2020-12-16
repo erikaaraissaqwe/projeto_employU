@@ -10,6 +10,6 @@ router.post("/register", candidateController.register);
 
 router.use("/curriculo", require("./resumeRoutes"));
 
-router.use("/vagas", require("./jobRoutes"));
+router.use("/vagas", require("./candidateJobRoutes"));
 
 module.exports = router;

@@ -5,6 +5,11 @@ router.post("/loginCheck", companyController.login);
 
 router.post("/register", companyController.register);
 
-router.use("/vagas", require("./jobRoutes"));
+router.post("/logout", (req, res)=>{
+    //todo: logout verification
+});
+
+router.use("/vagas", require("./companyJobRoutes"));
+
 
 module.exports = router;
