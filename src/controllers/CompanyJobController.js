@@ -1,5 +1,8 @@
 const jobOpportunity = require("../models/jobOpportunity.js");
+const jobCandidate = require("../models/jobCandidate.js");
+const candidate = require("../models/Candidate");
 const { body, validationResult } = require('express-validator');
+const Curriculum = require("../models/Curriculum");
 
 module.exports = {
 
@@ -63,6 +66,42 @@ module.exports = {
         });
     },
 
-    
+    async listCandidates(req, res){
+        const filter = {
+            jobId: req.params.vagaId,
+            isRunning: true
+        }
+        await jobCandidate.find(filter, 'candidateId -_id', (err, candidateIds) => {
+            if (err){
+                return res.json({errorMessage:err})
+            }
+            idList = candidateIds.map((candidateIds)=>{return candidateIds['candidateId']})
+            candidate.find({ _id: { $in: idList } }, (err, candidates) => {
+                if (err){
+                    return res.json({errorMessage:err})
+                }
+                return res.json({candidates})
+            });
+        });
+    },
+
+    async candidateInfo(req, res){
+        const filter = {
+            jobId: req.params.vagaId,
+            candidateId: req.params.candidatoId
+        }
+        await jobCandidate.findOne(filter, 'candidateId -_id', (err, candidateId) => {
+            if (err){
+                return res.json({errorMessage:err})
+            }
+            candidate.findOne(candidateId, (err, candidateObj) => {
+                if (err){
+                    return res.json({errorMessage:err})
+                }
+                const resume = Curriculum.findOne({user: candidateId['candidateId']})
+                return res.json({candidateObj, resume})
+            });
+        });
+    }
 }
 

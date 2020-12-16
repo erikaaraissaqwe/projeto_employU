@@ -10,7 +10,9 @@ const JobCandidateSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: "Candidate"
     },
-    isRunning: Boolean
+    isRunning: Boolean,
+    companyFeedback: String,
+    candidateFeedback: String
 });
 
 const modelName = 'JobCandidate';
