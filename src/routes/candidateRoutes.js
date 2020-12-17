@@ -7,9 +7,8 @@ router.post("/loginCheck", candidateController.login);
 
 router.post("/register", candidateController.register);
 
+router.use("/curriculo", authMiddleware.privateCandidate, require("./resumeRoutes"));
 
-router.use("/curriculo", authMiddleware.private, require("./resumeRoutes"));
-
-router.use("/vagas", authMiddleware.private, require("./candidateJobRoutes"));
+router.use("/vagas", authMiddleware.privateCandidate, require("./candidateJobRoutes"));
 
 module.exports = router;

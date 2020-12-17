@@ -6,12 +6,10 @@ router.post("/loginCheck", companyController.login);
 
 router.post("/register", companyController.register);
 
-//router.use(authMiddleware);
-
 router.post("/logout", (req, res)=>{
     //todo: logout verification
 });
 
-router.use("/vagas", authMiddleware.private, require("./companyJobRoutes"));
+router.use("/vagas", authMiddleware.privateCompany, require("./companyJobRoutes"));
 
 module.exports = router;
