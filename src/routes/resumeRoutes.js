@@ -1,13 +1,8 @@
 const router = require("express").Router();
 const multer = require('multer');
 const uploadConfig = require('../config/upload');
-const curriculumController = require("../controllers/CurriculumController");
+const resumeController = require("../controllers/ResumeController");
 const upload = multer(uploadConfig);
-
-router.get("/novo", (req, res)=>{
-    res.send("curriculo formulario")
-});
-
 
 /*
 COMO USAR A ROTA ABAIXO?
@@ -19,6 +14,12 @@ No Header tem que mandar o id_user, já cadastrado e assim consegue salvar o cur
 */
 
 //salva dados do curriculo do candidato
-router.post("/send", upload.single('filename'), curriculumController.store);
+router.post("/send", upload.single('filename'), resumeController.create);
+
+//atualiza dados do curriculo do candidato
+router.put("/update", upload.single('filename'), resumeController.edite);
+
+//retorna curriculo
+router.get("/list", resumeController.list);
 
 module.exports = router;

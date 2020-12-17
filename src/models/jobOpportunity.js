@@ -13,6 +13,10 @@ const modelSchema = new mongoose.Schema({
     qualifications: [String],
     additionalInformation: String,
     isOpen: Boolean,
+    candidatesId: [{
+        type:mongoose.Schema.Types.ObjectId,
+        ref: "Candidate"
+    }],
     companyId: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "Company"
