@@ -8,11 +8,13 @@ server.use(cors());
 server.use(bodyParser.json());
 server.use(bodyParser.urlencoded({extended: false}));
 
+
 mongoose.connect('mongodb+srv://employU:employU@employu.p4q3n.mongodb.net/<employU>?retryWrites=true&w=majority',{
     useUnifiedTopology : true,
     userNewUrlParser : true,
     useCreateIndex : true
 });
+
 
 server.use(express.static(__dirname+'/public'));
 

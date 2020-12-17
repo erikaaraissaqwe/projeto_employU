@@ -33,8 +33,6 @@ module.exports = {
         
             return res.status(400).json({errorMessage:'Registration failed'});
         }
-       
-    
     },
 
     async login(req, res){

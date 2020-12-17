@@ -22,10 +22,7 @@ module.exports = {
                     password,
                     cnpj
                 });
-
-                console.log(user);
                 user.password = undefined;
-                console.log(user);
                 return res.send({user, token: generateToken({id: user.id})});
             }
     

@@ -5,12 +5,8 @@ router.get("/", jobController.listAllOpen);
 
 router.get("/:vagaId", jobController.listOne);
 
-router.post("/:vagaid/candidatar", (req, res)=>{
-    //todo: candidatar a vaga verificacao
-});
+router.post("/:vagaid/candidatar", jobController.applyForJob);
 
-router.post("/:vagaId/desistir", (req, res)=>{
-    //todo: cancelar candidatura a vaga verificacao + feedback
-});
+router.put("/:vagaId/desistir", jobController.cancelApplication);
 
 module.exports = router;

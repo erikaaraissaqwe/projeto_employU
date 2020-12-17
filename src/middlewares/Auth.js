@@ -18,8 +18,7 @@ module.exports = {
         }
 
         const [scheme, token] = parts;
-
-        if(!/^Bearer$^/i.test(scheme)){
+        if(!/^Bearer$/i.test(scheme)){
             return res.status(401).send({errorMessage:'Token malformatted'});
         }
 
@@ -27,8 +26,7 @@ module.exports = {
             if (err){
                 return res.status(401).send({errorMessage:'Token invalid'});
             }
-            req.userId = decoded.id;
-
+            req.userId = decoded.params.id;
             return next();
         });
         

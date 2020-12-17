@@ -1,4 +1,5 @@
 const jobOpportunity = require("../models/jobOpportunity.js");
+const jobCandidate = require("../models/jobCandidate.js");
 const { body, validationResult } = require('express-validator');
 
 
@@ -25,6 +26,32 @@ module.exports = {
                 return res.json({errorMessage:'Nenhuma vaga em aberto'});
             }
             return res.json({jobs});
+        });
+    },
+
+    async applyForJob(req, res) {
+        const jobApplyed = {
+            jobId: req.params.vagaid,
+            candidateId: req.userId,
+            isRunning: true
+        }
+
+        await jobCandidate.create(jobApplyed, (err, jobA) => {
+            if (err){
+                return res.json({errorMessage: err})
+            }
+            return res.json({jobA});
+        });
+    },
+
+    async cancelApplication(req, res) {
+        const isRunning= false
+        const jobId = req.params.vagaid
+        await jobOpportunity.findOneAndUpdate(jobId, isRunning, (err, jobA) =>{
+            if (err){
+                return res.json({errorMessage:err});
+            }
+            return res.json({jobA});
         });
     }
 }
