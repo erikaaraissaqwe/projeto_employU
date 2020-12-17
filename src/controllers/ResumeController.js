@@ -83,7 +83,6 @@ module.exports = {
             return res.json({curriculum});
         });
     }
-
 }
 
 function isEmpty(string){
