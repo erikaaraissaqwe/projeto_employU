@@ -56,22 +56,43 @@ module.exports = {
     },
 
     async feedback(req, res) {
-        const userId = { candidateId: req.userId, jobId: req.params.vagaId}; 
-        let jobCand = await jobCandidate.findOne(userId, (err, jobCand) => {
+        const jobFeed = { candidateId: req.userId, jobId: req.params.vagaId}; 
+        let jobCand = await jobCandidate.findOne(jobFeed, (err, jobCand) => {
             if (err) {
                 return res.json({errorMessage:'Não existe usuario com esse id cadastrado em uma vaga'});
             }
             return jobCand;
         }); 
-        console.log(jobCand);
-        await jobCandidate.findOneAndUpdate({"_id": jobCand._id},{"candidateFeedback":req.body.msg}, (err, feedback) => {
+        let feedback = await jobCandidate.findOneAndUpdate({"_id": jobCand._id},{"candidateFeedback":req.body.msg}, (err, feedback) => {
             if (err) {
                 return res.json({errorMessage:err});
             }
-            return res.send({feedback});
+            return feedback._id;
         });
-        
-
+        await jobCandidate.findOne(feedback, (err, jobCand) => {
+            if (err) {
+                return res.json({errorMessage:err});
+            }
+            return res.send({jobCand});
+        }); 
+    },
+    
+    async listAllApplied(req, res) {
+        const candidateId = req.userId
+        await jobCandidate.find({candidateId}, (err, jobA) => {
+            if (err){
+                return res.json({errorMessage:err});
+            }
+            jobA.forEach(ja => {
+                jobOpportunity.findOne(ja["jobId"], (err, job) =>{
+                    if (err){
+                        return res.json({errorMessage:err})
+                    }
+                    ja["job"] = job;
+                });
+            });
+            return res.json({jobA})
+        });
     }
 }
 
