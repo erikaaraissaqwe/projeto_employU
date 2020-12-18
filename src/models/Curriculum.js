@@ -10,7 +10,6 @@ const CurriculumSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref : 'Candidate'
     }
-    
 });
 
 const modelName = 'Curriculum';
