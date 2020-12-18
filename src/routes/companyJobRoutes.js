@@ -1,7 +1,6 @@
 const router = require("express").Router();
 const jobController = require("../controllers/CompanyJobController");
 
-
 router.post("/add", jobController.validateNewJob, jobController.add);
 
 //lista uma vaga
@@ -19,8 +18,6 @@ router.get("/:vagaId/candidatos/:candidatoId", jobController.candidateInfo);
 //feedack
 router.put("/:vagaId/feedback/:candidatoId", jobController.feedback);
 
-router.post("/:vagaId/candidatos/:candidatoNome", (req, res)=>{
-    //todo: eliminar candidato + feedback
-});
+
 
 module.exports = router;
