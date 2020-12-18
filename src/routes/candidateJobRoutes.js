@@ -13,4 +13,7 @@ router.post("/:vagaid/candidatar", jobController.applyForJob);
 //desiste de uma vaga
 router.put("/:vagaId/desistir", jobController.cancelApplication);
 
+//feedack
+router.put("/:vagaId/feedback", jobController.feedback);
+
 module.exports = router;

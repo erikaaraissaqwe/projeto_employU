@@ -102,6 +102,27 @@ module.exports = {
                 return res.json({candidateObj, resume})
             });
         });
+    },
+
+    async feedback(req, res) {
+        const userId = { candidateId: req.param.candidateId, jobId: req.params.vagaId}; 
+        let jobCand = await jobCandidate.findOne(userId, (err, jobCand) => {
+            if (err) {
+                return res.json({errorMessage:'Não existe usuario com esse id cadastrado em uma vaga'});
+            }
+            return jobCand;
+        }); 
+        console.log(jobCand);
+        await jobCandidate.findOneAndUpdate({"_id": jobCand._id},{"candidateFeedback":req.body.msg}, (err, feedback) => {
+            if (err) {
+                return res.json({errorMessage:err});
+            }
+            return res.send({feedback});
+        });
+        
+
     }
+
+    
 }
 

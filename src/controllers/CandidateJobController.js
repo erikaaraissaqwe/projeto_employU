@@ -47,12 +47,31 @@ module.exports = {
     async cancelApplication(req, res) {
         const isRunning= false
         const jobId = req.params.vagaid
-        await jobOpportunity.findOneAndUpdate(jobId, isRunning, (err, jobA) =>{
+        await jobCandidate.findOneAndUpdate(jobId, isRunning, (err, jobA) =>{
             if (err){
                 return res.json({errorMessage:err});
             }
             return res.json({jobA});
         });
+    },
+
+    async feedback(req, res) {
+        const userId = { candidateId: req.userId, jobId: req.params.vagaId}; 
+        let jobCand = await jobCandidate.findOne(userId, (err, jobCand) => {
+            if (err) {
+                return res.json({errorMessage:'Não existe usuario com esse id cadastrado em uma vaga'});
+            }
+            return jobCand;
+        }); 
+        console.log(jobCand);
+        await jobCandidate.findOneAndUpdate({"_id": jobCand._id},{"candidateFeedback":req.body.msg}, (err, feedback) => {
+            if (err) {
+                return res.json({errorMessage:err});
+            }
+            return res.send({feedback});
+        });
+        
+
     }
 }
 
