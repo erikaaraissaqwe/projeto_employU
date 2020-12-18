@@ -78,21 +78,26 @@ module.exports = {
     },
     
     async listAllApplied(req, res) {
-        const candidateId = req.userId
+        const candidateId = req.userId;
         await jobCandidate.find({candidateId}, (err, jobA) => {
             if (err){
                 return res.json({errorMessage:err});
             }
+            let jobs = []
             jobA.forEach(ja => {
-                jobOpportunity.findOne(ja["jobId"], (err, job) =>{
+                let job = jobOpportunity.findOne(ja.jobId, (err, job) =>{
                     if (err){
                         return res.json({errorMessage:err})
                     }
-                    ja["job"] = job;
+                    return job;
+                    
                 });
+                ja.job =job
+                console.log(job)
             });
             return res.json({jobA})
         });
+        
     }
 }
 
