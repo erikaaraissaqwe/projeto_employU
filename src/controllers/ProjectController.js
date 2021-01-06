@@ -1,12 +1,24 @@
-const express = require('express');
+
 const authMiddleware = require('../middlewares/Auth');
 
-const CheckRouter = express.Router();
 
-CheckRouter.use(authMiddleware);
+module.exports = {
 
-CheckRouter.get('/',(req,res)=>{
-    res.send({ok:true});
-});
+    checkCandidate : async (req, res) => {
+        console.log(authMiddleware.privateCandidate());
+        if(authMiddleware.privateCandidate){
+            return res.status(200).send({message:'CERTO', data: 200});
+        }else{
+            return res.status(401).send({errorMessage:'Headers Undefined', data: 401});
+        }  
+    },
 
-module.exports = server=>server.use('/check',CheckRouter);
+    checkCompany : async (req, res) => {
+
+        if(authMiddleware.privateCompany){
+            res.send({data:"200"});
+        }else{
+            res.send({data:"401"});
+        }  
+    }
+}

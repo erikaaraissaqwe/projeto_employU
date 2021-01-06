@@ -6,7 +6,10 @@ const authConfig = require('../config/auth.json');
 module.exports = {
 
     privateCandidate : async (req, res, next) => {
-        
+
+        if(!req.headers){
+            return res.status(401).send({errorMessage:'Headers Undefined', data: 401});
+        }
 
         let candidate = await Candidate.findById(req.headers.user_id);
 
@@ -18,6 +21,10 @@ module.exports = {
     },
 
     privateCompany : async (req, res, next) => {
+
+        if(!req.headers){
+            return res.status(401).send({errorMessage:'Headers Undefined', data: 401});
+        }
         
         let company = await Company.findById(req.headers.user_id);
 

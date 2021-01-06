@@ -7,6 +7,7 @@ const server = express();
 server.use(cors());
 server.use(bodyParser.json());
 server.use(bodyParser.urlencoded({extended: false}));
+const Check = require('./src/controllers/ProjectController');
 
 
 mongoose.connect('mongodb+srv://employU:employU@employu.p4q3n.mongodb.net/<employU>?retryWrites=true&w=majority',{
@@ -36,9 +37,9 @@ server.get('/ping', (req, res)=>{
     res.json({pong:true});
 });
 
-server.get("*", (req, res)=>{
-    res.send("404")
-});
+server.use('/checkCandidate', Check.checkCandidate);
+
+server.use('/checkCompany', Check.checkCompany);
 
 server.listen(process.env.PORT, ()=>{
     console.log(`- Rodando no endereço: ${process.env.BASE}`);
