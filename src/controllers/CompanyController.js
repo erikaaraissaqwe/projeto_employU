@@ -23,7 +23,7 @@ module.exports = {
                     cnpj
                 });
                 user.password = undefined;
-                return res.send({user, token: generateToken({id: user.id})});
+                return res.status(200).send({user, token: generateToken({id: user.id})});
             }
     
             return res.status(400).json({errorMessage:'User already exists'});
@@ -52,7 +52,6 @@ module.exports = {
 
         user.password = undefined;
      
-    
         return res.json({user, 
             token : generateToken({id : user.id}),
         });
