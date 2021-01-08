@@ -7,7 +7,7 @@ const server = express();
 server.use(cors());
 server.use(bodyParser.json());
 server.use(bodyParser.urlencoded({extended: false}));
-
+const authMiddleware = require('./src/middlewares/Auth');
 
 mongoose.connect('mongodb+srv://employU:employU@employu.p4q3n.mongodb.net/<employU>?retryWrites=true&w=majority',{
     useUnifiedTopology : true,
@@ -36,8 +36,12 @@ server.get('/ping', (req, res)=>{
     res.json({pong:true});
 });
 
-server.get("*", (req, res)=>{
-    res.send("404")
+server.use('/checkCandidate', authMiddleware.privateCandidate, (req, res)=>{
+    res.status(200).json({data:200});
+});
+
+server.use('/checkCompany', authMiddleware.privateCompany, (req, res)=>{
+    res.status(200).json({data:200});
 });
 
 server.listen(process.env.PORT, ()=>{

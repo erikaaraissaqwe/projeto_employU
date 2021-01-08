@@ -31,7 +31,7 @@ module.exports = {
         }
         catch(err){
         
-            return res.status(400).json({errorMessage:'Registration failed'});
+            return res.status(500).json({errorMessage:'Registration failed'});
         }
     },
 
