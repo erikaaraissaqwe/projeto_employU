@@ -1,5 +1,6 @@
 const jobOpportunity = require("../models/jobOpportunity.js");
 const jobCandidate = require("../models/jobCandidate.js");
+const jobCompany = require("../models/Company.js")
 const candidate = require("../models/Candidate");
 const { body, validationResult } = require('express-validator');
 const Curriculum = require("../models/Curriculum");
@@ -46,7 +47,32 @@ module.exports = {
             if (err) {
                 return res.json({errorMessage:'Vaga nao encontrada'});
             }
-            return res.json({job});
+            jobCompany.findOne({ _id: req.userId }, (err, cpy) =>{
+                if (err){
+                    return res.json({errorMessage:err})
+                }
+                job.company = cpy;
+                return res.json({job});
+            });
+        });
+    },
+
+    async listAllOpen(req, res){
+        const jobC = { companyId: req.userId, isOpen: true}; 
+        await jobOpportunity.find(jobC).lean().exec((err, jobs) => {
+            if (err) {
+                return res.json({errorMessage:'Nenhuma vaga em aberto'});
+            }
+            jobCompany.findOne({ _id: req.userId }, (err, cpy) =>{
+                if (err){
+                    return res.json({errorMessage:err})
+                }
+                jobs.forEach(ja => {
+                    ja.company = cpy;
+                });
+                return res.json({jobs});
+            });
+            //return res.json({jobs});
         });
     },
 

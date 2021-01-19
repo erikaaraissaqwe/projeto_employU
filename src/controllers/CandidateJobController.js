@@ -1,5 +1,6 @@
 const jobOpportunity = require("../models/jobOpportunity.js");
 const jobCandidate = require("../models/jobCandidate.js");
+const jobCompany = require("../models/Company.js")
 const { body, validationResult } = require('express-validator');
 
 
@@ -11,21 +12,37 @@ module.exports = {
 
     async listOne(req, res){
         const _id = req.params.vagaid
-        await jobOpportunity.findOne({_id}, (err, job) => {
+        await jobOpportunity.findOne({_id}).lean().exec((err, job) => {
             if (err) {
                 return res.json({errorMessage:'Nenhuma vaga encontrada'});
             }
-            return res.json({job});
+            jobCompany.findOne({ _id: job.companyId }, (err, cpy) =>{
+                if (err){
+                    return res.json({errorMessage:err})
+                }
+                job.company = cpy;
+                return res.json({job});
+            });
         });
     },
 
     async listAllOpen(req, res){
         const isOpen = true
-        await jobOpportunity.find({isOpen}, (err, jobs) => {
+        await jobOpportunity.find({isOpen}).lean().exec((err, jobs) => {
             if (err) {
                 return res.json({errorMessage:'Nenhuma vaga em aberto'});
             }
-            return res.json({jobs});
+            idList = jobs.map((jobs)=>{return jobs['companyId']})
+            jobCompany.find({ _id: { $in: idList } }, (err, cpy) =>{
+                if (err){
+                    return res.json({errorMessage:err})
+                }
+                jobs.forEach(ja => {
+                    ja.company = cpy.find(e => e._id.toString() == ja.companyId.toString());
+                });
+                return res.json({jobs});
+            });
+            //return res.json({jobs});
         });
     },
 

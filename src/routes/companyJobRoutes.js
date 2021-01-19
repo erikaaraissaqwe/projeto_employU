@@ -3,6 +3,9 @@ const jobController = require("../controllers/CompanyJobController");
 
 router.post("/add", jobController.validateNewJob, jobController.add);
 
+//lista as vagas abertas
+router.get("/", jobController.listAllOpen);
+
 //lista uma vaga
 router.get("/:vagaid", jobController.listOne);
 
