@@ -11,7 +11,7 @@ const authMiddleware = require('./src/middlewares/Auth');
 
 mongoose.connect('mongodb+srv://employU:employU@employu.p4q3n.mongodb.net/<employU>?retryWrites=true&w=majority',{
     useUnifiedTopology : true,
-    userNewUrlParser : true,
+    useNewUrlParser : true,
     useCreateIndex : true
 });
 

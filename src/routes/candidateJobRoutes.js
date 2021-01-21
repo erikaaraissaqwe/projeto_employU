@@ -4,7 +4,6 @@ const jobController = require("../controllers/CandidateJobController");
 //lista vagas em aberto
 router.get("/", jobController.listAllOpen);
 
-
 //lista todas que se candidatou
 router.get("/candidatadas", jobController.listAllApplied);
 
