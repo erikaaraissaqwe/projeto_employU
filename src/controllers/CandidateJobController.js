@@ -11,9 +11,9 @@ module.exports = {
     ],
 
     async listOne(req, res){
-        const _id = req.params.vagaid
+        const _id = req.params.vagaId
         await jobOpportunity.findOne({_id}).lean().exec((err, job) => {
-            if (err) {
+            if (err || job == null) {
                 return res.json({errorMessage:'Nenhuma vaga encontrada'});
             }
             jobCompany.findOne({ _id: job.companyId }, (err, cpy) =>{
