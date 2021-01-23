@@ -7,10 +7,10 @@ router.post("/add", jobController.validateNewJob, jobController.add);
 router.get("/", jobController.listAllOpen);
 
 //lista uma vaga
-router.get("/:vagaid", jobController.listOne);
+router.get("/:vagaId", jobController.listOne);
 
 //fecha uma vaga
-router.put("/:vagaid", jobController.closeJob );
+router.put("/:vagaId", jobController.closeJob );
 
 //retorna dados dos candidatos de uma vaga
 router.get("/:vagaId/candidatos", jobController.listCandidates);

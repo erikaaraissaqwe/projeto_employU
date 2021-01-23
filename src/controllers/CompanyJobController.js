@@ -42,8 +42,8 @@ module.exports = {
     },
 
     async listOne(req, res){
-        const _id = req.params.vagaid
-        await jobOpportunity.findOne({_id}, (err, job) => {
+        const _id = req.params.vagaId
+        await jobOpportunity.findOne({_id}).lean().exec((err, job) => {
             if (err) {
                 return res.json({errorMessage:'Vaga nao encontrada'});
             }
@@ -152,7 +152,5 @@ module.exports = {
         }); 
 
     }
-
-    
 }
 
