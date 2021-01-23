@@ -108,14 +108,19 @@ module.exports = {
                 jobA.forEach(ja => {
                     ja.job = jbs.find(e => e._id.toString() == ja.jobId.toString());
                 });
-                const jobs = []
-                jobA.forEach(ja => {
-                    //eu sei que isso da pra ir pro for de cima, mas deixa assim por enquanto
-                    ja = JSON.parse(JSON.stringify(ja.job));
-                    ja.company = {name: "NÃO CONSIGO COLOCAR EMPRESA NESSA MERDA"};
-                    jobs.push(ja);
+                idList = jbs.map((jbs) => {return jbs.companyId})
+                jobCompany.find({_id: {$in: idList}},(err, cpy) => {
+                    if (err){
+                        return res.json({errorMessage:err})
+                    }
+                    const jobs = [];
+                    jobA.forEach(ja => {
+                        ja = JSON.parse(JSON.stringify(ja.job));
+                        ja.company = cpy.find(e => e._id.toString() == ja.companyId.toString());
+                        jobs.push(ja);
+                    });
+                    return res.json({jobs});
                 });
-                return res.json({jobs});
             });
         });
         
