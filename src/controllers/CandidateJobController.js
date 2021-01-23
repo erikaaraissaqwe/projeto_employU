@@ -108,7 +108,14 @@ module.exports = {
                 jobA.forEach(ja => {
                     ja.job = jbs.find(e => e._id.toString() == ja.jobId.toString());
                 });
-                return res.json(jobA)
+                const jobs = []
+                jobA.forEach(ja => {
+                    //eu sei que isso da pra ir pro for de cima, mas deixa assim por enquanto
+                    ja = JSON.parse(JSON.stringify(ja.job));
+                    ja.company = {name: "NÃO CONSIGO COLOCAR EMPRESA NESSA MERDA"};
+                    jobs.push(ja);
+                });
+                return res.json({jobs});
             });
         });
         
