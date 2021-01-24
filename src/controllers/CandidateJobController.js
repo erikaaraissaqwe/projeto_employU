@@ -12,6 +12,7 @@ module.exports = {
 
     async listOne(req, res){
         const _id = req.params.vagaId
+        const candidateId = req.userId;
         await jobOpportunity.findOne({_id}).lean().exec((err, job) => {
             if (err || job == null) {
                 return res.json({errorMessage:'Nenhuma vaga encontrada'});
@@ -21,7 +22,13 @@ module.exports = {
                     return res.json({errorMessage:err})
                 }
                 job.company = cpy;
-                return res.json({job});
+                jobCandidate.findOne({jobId: _id, candidateId}, (err, jbCand) =>{
+                    if (err){
+                        return res.json({errorMessage:err})
+                    }
+                    job.isRunning = jbCand?true:false;
+                    return res.json({job});
+                });
             });
         });
     },
