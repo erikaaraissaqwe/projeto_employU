@@ -132,17 +132,11 @@ module.exports = {
 
     async feedback(req, res) {
         const jobFeed = { jobId: req.params.vagaId}; 
-        await jobCandidate.find(jobFeed, (err, jobCands) => {
+        await jobCandidate.updateMany(jobFeed, {"companyFeedback":req.body.msg}, (err, feedback) => {
             if (err) {
-                return res.json({errorMessage:'Não existe usuarios cadastrado nessa vaga'});
+                return res.json({errorMessage:err});
             }
-            idList = jobCands.map((jobCands)=>{return jobCands['candidateId']})
-            jobCandidate.updateMany({"candidateId": {$in: idList}},{"companyFeedback":req.body.msg}, (err, feedback) => {
-                if (err) {
-                    return res.json({errorMessage:err});
-                }
-                return feedback._id;
-            });
+            return feedback._id;
         });
     }
 }
