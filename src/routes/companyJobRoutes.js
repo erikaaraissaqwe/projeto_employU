@@ -19,7 +19,7 @@ router.get("/:vagaId/candidatos", jobController.listCandidates);
 router.get("/:vagaId/candidatos/:candidatoId", jobController.candidateInfo);
 
 //feedack
-router.put("/:vagaId/feedback/:candidatoId", jobController.feedback);
+router.put("/:vagaId/feedback", jobController.feedback);
 
 
 

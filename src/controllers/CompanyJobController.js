@@ -131,26 +131,19 @@ module.exports = {
     },
 
     async feedback(req, res) {
-        const jobFeed = { candidateId: req.params.candidatoId, jobId: req.params.vagaId}; 
-        let jobCand = await jobCandidate.findOne(jobFeed, (err, jobCand) => {
+        const jobFeed = { jobId: req.params.vagaId}; 
+        await jobCandidate.find(jobFeed, (err, jobCands) => {
             if (err) {
-                return res.json({errorMessage:'Não existe usuario com esse id cadastrado em uma vaga'});
+                return res.json({errorMessage:'Não existe usuarios cadastrado nessa vaga'});
             }
-            return jobCand;
-        }); 
-        let feedback = await jobCandidate.findOneAndUpdate({"_id": jobCand._id},{"companyFeedback":req.body.msg}, (err, feedback) => {
-            if (err) {
-                return res.json({errorMessage:err});
-            }
-            return feedback._id;
+            idList = jobCands.map((jobCands)=>{return jobCands['candidateId']})
+            jobCandidate.updateMany({"candidateId": {$in: idList}},{"companyFeedback":req.body.msg}, (err, feedback) => {
+                if (err) {
+                    return res.json({errorMessage:err});
+                }
+                return feedback._id;
+            });
         });
-        await jobCandidate.findOne(feedback, (err, jobCand) => {
-            if (err) {
-                return res.json({errorMessage:err});
-            }
-            return res.send({jobCand});
-        }); 
-
     }
 }
 

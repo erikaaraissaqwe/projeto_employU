@@ -26,7 +26,14 @@ module.exports = {
                     if (err){
                         return res.json({errorMessage:err})
                     }
-                    job.isRunning = jbCand?true:false;
+                    if(jbCand){
+                        job.isRunning = jbCand.isRunning;
+                        job.companyFeedback = jbCand.companyFeedback;
+                        job.candidateFeedback = jbCand.candidateFeedback;
+                    }
+                    else {
+                        job.isRunning = false;
+                    }
                     return res.json({job});
                 });
             });
