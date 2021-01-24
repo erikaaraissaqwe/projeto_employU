@@ -42,7 +42,6 @@ module.exports = {
                 });
                 return res.json({jobs});
             });
-            //return res.json({jobs});
         });
     },
 
