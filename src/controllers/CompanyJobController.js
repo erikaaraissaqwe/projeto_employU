@@ -84,8 +84,27 @@ module.exports = {
         });
     },
 
+    async listAllClosed(req, res){
+        const jobC = { companyId: req.userId, isOpen: false}; 
+        await jobOpportunity.find(jobC).lean().exec((err, jobs) => {
+            if (err) {
+                return res.json({errorMessage:err});
+            }
+            jobCompany.findOne({ _id: req.userId }, (err, cpy) =>{
+                if (err){
+                    return res.json({errorMessage:err})
+                }
+                jobs.forEach(ja => {
+                    ja.company = cpy;
+                });
+                return res.json({jobs});
+            });
+            //return res.json({jobs});
+        });
+    },
+
     async closeJob(req, res){
-        const vagaId = {"_id": req.params.vagaid};
+        const vagaId = {"_id": req.params.vagaId};
         const isOpen = {"isOpen": false};
         await jobOpportunity.findOneAndUpdate(vagaId, isOpen, (err) =>{
             if (err){

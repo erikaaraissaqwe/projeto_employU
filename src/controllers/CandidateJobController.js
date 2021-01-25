@@ -73,9 +73,9 @@ module.exports = {
     },
 
     async cancelApplication(req, res) {
-        const isRunning= false
-        const jobId = req.params.vagaId
-        await jobCandidate.findOneAndUpdate(jobId, {isRunning}, (err, jobA) =>{
+        const isRunning= false;
+        const jobId = req.params.vagaId;
+        await jobCandidate.findOneAndUpdate({jobId}, {isRunning}, (err, jobA) =>{
             if (err){
                 console.log(err)
                 return res.json({errorMessage:err});
