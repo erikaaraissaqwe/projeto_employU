@@ -52,7 +52,15 @@ module.exports = {
                     return res.json({errorMessage:err})
                 }
                 job.company = cpy;
-                return res.json({job});
+                jobCandidate.findOne({jobId: _id}, (err, jbCand) =>{
+                    if (err){
+                        return res.json({errorMessage:err})
+                    }
+                    if(jbCand){
+                        job.companyFeedback = jbCand.companyFeedback;
+                    }
+                    return res.json({job});
+                });
             });
         });
     },
@@ -97,16 +105,27 @@ module.exports = {
             jobId: req.params.vagaId,
             isRunning: true
         }
-        await jobCandidate.find(filter, 'candidateId -_id', (err, candidateIds) => {
+        await jobCandidate.find(filter, (err, jobCandidates) => {
             if (err){
                 return res.json({errorMessage:err})
             }
-            idList = candidateIds.map((candidateIds)=>{return candidateIds['candidateId']})
-            candidate.find({ _id: { $in: idList } }, (err, candidates) => {
+            idList = jobCandidates.map((jobCandidates)=>{return jobCandidates['candidateId']})
+            candidate.find({ _id: { $in: idList } }).lean().exec((err, candidates) => {
                 if (err){
                     return res.json({errorMessage:err})
                 }
-                return res.json({candidates})
+                Curriculum.find({ user: { $in: idList } }).lean().exec((err, curriculum) => {
+                    if (err){
+                        return res.json({errorMessage:err})
+                    }
+                    candidates.forEach(cd => {
+                        let jc = jobCandidates.find(e => e.candidateId.toString() == cd._id.toString());
+                        cd.candidateFeedback = jc.candidateFeedback;
+                        let resume = curriculum.find(e => e.user.toString() == cd._id.toString());
+                        cd.resume = resume;
+                    });
+                    return res.json({candidates})
+                });
             });
         });
     },
