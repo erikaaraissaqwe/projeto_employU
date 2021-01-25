@@ -77,6 +77,7 @@ module.exports = {
         const jobId = req.params.vagaId
         await jobCandidate.findOneAndUpdate(jobId, {isRunning}, (err, jobA) =>{
             if (err){
+                console.log(err)
                 return res.json({errorMessage:err});
             }
             return res.json({jobA});
@@ -106,8 +107,9 @@ module.exports = {
     },
     
     async listAllApplied(req, res) {
+        const isRunning = true;
         const candidateId = req.userId;
-        await jobCandidate.find({candidateId}).lean().exec((err, jobA) => {
+        await jobCandidate.find({candidateId, isRunning}).lean().exec((err, jobA) => {
             if (err){
                 return res.json({errorMessage:err});
             }
