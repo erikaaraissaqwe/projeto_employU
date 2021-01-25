@@ -63,10 +63,8 @@ module.exports = {
         const jobApplyed = {
             jobId: req.params.vagaid,
             candidateId: req.userId,
-            isRunning: true
         }
-
-        await jobCandidate.create(jobApplyed, (err, jobA) => {
+        await jobCandidate.findOneAndUpdate(jobApplyed,{isRunning: true}, {new: true, upsert: true},(err, jobA) => {
             if (err){
                 return res.json({errorMessage: err})
             }
@@ -77,7 +75,7 @@ module.exports = {
     async cancelApplication(req, res) {
         const isRunning= false
         const jobId = req.params.vagaid
-        await jobCandidate.findOneAndUpdate(jobId, isRunning, (err, jobA) =>{
+        await jobCandidate.findOneAndUpdate(jobId, {isRunning}, (err, jobA) =>{
             if (err){
                 return res.json({errorMessage:err});
             }
