@@ -7,7 +7,7 @@ router.get("/", jobController.listAllOpen);
 //lista todas que se candidatou
 router.get("/candidatadas", jobController.listAllApplied);
 
-//lista uma vaga
+//lista uma vaga 
 router.get("/:vagaId", jobController.listOne);
 
 //se candidata para uma vaga
